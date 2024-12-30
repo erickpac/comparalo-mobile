@@ -41,31 +41,32 @@ export default function ProductDetailScreen() {
     return <FallbackView message={error.message} />;
   }
 
+  const product = data.results.product;
+  const relatedProducts = data.results.relatedProducts;
+  const priceHistory = data.results.priceHistory;
+
   return (
     <ScrollView style={{ backgroundColor }}>
       <ThemedView style={styles.container}>
         <HeaderContent
-          productDescription={data.results.product.description}
+          productDescription={product.description}
           productPrice={{
-            amount: data.results.product.current_price,
+            amount: product.current_price,
             currency: CURRENCY,
           }}
-          storeUrl={data.results.product.stores.address}
-          storeName={data.results.product.stores.name}
+          productdetailUrl={product.detail_url}
+          storeName={product.stores.name}
         />
 
-        <ProductImage
-          product={data.results.product}
-          relatedProducts={data.results.relatedProducts}
-        />
+        <ProductImage product={product} relatedProducts={relatedProducts} />
 
         <PriceComparison
-          relatedProducts={data.results.relatedProducts}
+          relatedProducts={relatedProducts}
           currency={CURRENCY}
         />
 
         <PriceHistoryView
-          priceHistory={data.results.priceHistory}
+          priceHistory={priceHistory}
           backgroundColor={backgroundColor}
         />
       </ThemedView>
@@ -76,14 +77,14 @@ export default function ProductDetailScreen() {
 type HeaderContentProps = {
   productDescription?: string;
   productPrice: Money;
-  storeUrl: string;
+  productdetailUrl: string;
   storeName: string;
 };
 
 const HeaderContent = ({
   productDescription,
   productPrice,
-  storeUrl,
+  productdetailUrl,
   storeName,
 }: HeaderContentProps) => {
   const { t } = useTranslation();
@@ -96,7 +97,7 @@ const HeaderContent = ({
         {formatMoney(productPrice)}
       </ThemedText>
 
-      <Pressable onPress={() => Linking.openURL(storeUrl)}>
+      <Pressable onPress={() => Linking.openURL(productdetailUrl)}>
         <ThemedView
           lightColor="black"
           darkColor="grey"
