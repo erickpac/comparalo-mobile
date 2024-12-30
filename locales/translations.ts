@@ -1,0 +1,46 @@
+import { Translations } from "@/types/translations";
+
+export const translations: Translations = {
+  en: {
+    contactUs: "Contact Us",
+    aboutUs: "About Us",
+    termsAndConditions: "Terms and Conditions",
+    privacyPolicy: "Privacy Policy",
+    homeCategory: "Find",
+    homeSubtitle: "The best prices in one single place.",
+    homeCategoriesButtonTitle: "Tap here",
+    productCardViewDetailsButtonTitle: "View details",
+    productDetailButAtStoreButtonTitle: "Buy at",
+    productDetailPriceComparisonTitle: "Price comparison",
+    productDetailPriceComparisonSubtitle: "List of prices on different stores.",
+    productDetailPriceComparisonTableHeaderColumn1: "Store",
+    productDetailPriceComparisonTableHeaderColumn2: "Product",
+    productDetailPriceComparisonTableHeaderColumn3: "Regular price",
+    productDetailPriceComparisonTableHeaderColumn4: "Sale price",
+    productDetailPriceHistoryTitle: "Price history",
+    productDetailPriceHistorySubtitle: "Price fluctuations over time",
+    productDetailLastThirtyDaysSegmentedOption: "Last 30 days",
+    productDetailLastNinetyDaysSegmentedOption: "Last 90 days"
+  },
+  es: {
+    contactUs: "Contáctenos",
+    aboutUs: "Sobre Nosotros",
+    termsAndConditions: "Términos y Condiciones",
+    privacyPolicy: "Políticas de Privacidad",
+    homeCategory: "Encuentra",
+    homeSubtitle: "Los mejores precios en un solo lugar.",
+    homeCategoriesButtonTitle: "Haz clic aquí",
+    productCardViewDetailsButtonTitle: "Ver detalles",
+    productDetailButAtStoreButtonTitle: "Comprar en",
+    productDetailPriceComparisonTitle: "Comparación de precios",
+    productDetailPriceComparisonSubtitle: "Listado de precios en diferentes tiendas.",
+    productDetailPriceComparisonTableHeaderColumn1: "Tienda",
+    productDetailPriceComparisonTableHeaderColumn2: "Producto",
+    productDetailPriceComparisonTableHeaderColumn3: "Precio regular",
+    productDetailPriceComparisonTableHeaderColumn4: "Precio en oferta",
+    productDetailPriceHistoryTitle: "Historial de precios",
+    productDetailPriceHistorySubtitle: "Fluctuaciones de precios a lo largo del tiempo",
+    productDetailLastThirtyDaysSegmentedOption: "Últimos 30 días",
+    productDetailLastNinetyDaysSegmentedOption: "Últimos 90 días"
+  },
+};
