@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { FallbackView } from "@/components/fallback-view";
-import { useFetchProductDetails } from "@/hooks/productDetails/useFetchProductDetails";
+import { useFetchProductDetails } from "@/hooks/product-details/useFetchProductDetails";
 import { Money, formatMoney } from "@/lib/utils";
 import { useLocalSearchParams } from "expo-router";
 import Constants from "expo-constants";

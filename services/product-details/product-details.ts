@@ -6,11 +6,12 @@ type Props = {
   id: number;
 };
 
-export const fetchProductDetails = async ({ id }: Props): Promise<ProductDetailResponse> => {
+export const fetchProductDetails = async ({
+  id,
+}: Props): Promise<ProductDetailResponse> => {
   try {
     const endpoint = getFullApiUrl(
-      ENDPOINTS.productDetails
-        .replace("{id}", id.toString())
+      ENDPOINTS.productDetails.replace("{id}", id.toString())
     );
     const response = await fetch(endpoint);
 

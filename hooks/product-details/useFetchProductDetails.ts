@@ -1,4 +1,4 @@
-import { fetchProductDetails } from "@/services/productDetails/productDetails";
+import { fetchProductDetails } from "@/services/product-details/product-details";
 import { useQuery } from "@tanstack/react-query";
 
 type Props = {
@@ -8,8 +8,8 @@ type Props = {
 export const useFetchProductDetails = ({ id }: Props) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["product-details", id],
-    queryFn: () => fetchProductDetails({ id })
+    queryFn: () => fetchProductDetails({ id }),
   });
 
-  return { data, isLoading, isError, error }
+  return { data, isLoading, isError, error };
 };
