@@ -2,6 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { FallbackView } from "@/components/fallback-view";
 import { HeaderContent } from "@/components/product-detail/header";
+import { ProductImage } from "@/components/product-detail/image";
 import { useFetchProductDetails } from "@/hooks/product-details/useFetchProductDetails";
 import { formatMoney } from "@/lib/utils";
 import { useLocalSearchParams } from "expo-router";
@@ -9,16 +10,14 @@ import Constants from "expo-constants";
 import {
   ActivityIndicator,
   Dimensions,
-  FlatList,
   Image,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Product, RelatedProduct } from "@/types/product/product";
+import { RelatedProduct } from "@/types/product/product";
 import { useEffect, useState } from "react";
 import { PriceHistory } from "@/types/product/price-history";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
@@ -73,72 +72,6 @@ export default function ProductDetailScreen() {
     </ScrollView>
   );
 }
-
-type ProductImageProps = {
-  product: Product;
-  relatedProducts: RelatedProduct[];
-};
-
-const ProductImage = ({ product, relatedProducts }: ProductImageProps) => {
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>(
-    product.image_url
-  );
-
-  return (
-    <>
-      <Image
-        source={{ uri: currentImageUrl }}
-        style={styles.highlightedImage}
-      />
-
-      <ProductImagesCarousel
-        currentImageUrl={currentImageUrl}
-        relatedProducts={relatedProducts}
-        updatedHighlightedImage={(newUrl) => {
-          setCurrentImageUrl(newUrl);
-        }}
-      />
-    </>
-  );
-};
-
-type ProductImagesCarouselProps = {
-  currentImageUrl: string;
-  relatedProducts: RelatedProduct[];
-  updatedHighlightedImage: (newUrl: string) => void;
-};
-
-const ProductImagesCarousel = ({
-  currentImageUrl,
-  relatedProducts,
-  updatedHighlightedImage,
-}: ProductImagesCarouselProps) => {
-  if (relatedProducts.length < 1) {
-    return null;
-  }
-
-  useEffect(() => {
-    updatedHighlightedImage(relatedProducts[0].image_url);
-  }, []);
-
-  return (
-    <FlatList
-      horizontal
-      data={relatedProducts}
-      renderItem={({ item }) => (
-        <Pressable onPress={() => updatedHighlightedImage(item.image_url)}>
-          <Image
-            source={{ uri: item.image_url }}
-            style={[
-              styles.carouselImage,
-              { borderWidth: item.image_url == currentImageUrl ? 1 : 0 },
-            ]}
-          />
-        </Pressable>
-      )}
-    />
-  );
-};
 
 type PriceComparisonProps = {
   relatedProducts: RelatedProduct[];
@@ -337,19 +270,6 @@ const styles = StyleSheet.create({
   },
   greyedText: {
     color: "grey",
-  },
-  highlightedImage: {
-    width: "100%",
-    height: 300,
-    resizeMode: "contain",
-  },
-  carouselImage: {
-    width: 150,
-    height: 150,
-    resizeMode: "contain",
-    overflow: "hidden",
-    borderRadius: 8,
-    borderColor: "grey",
   },
   table: {
     paddingTop: 8,
