@@ -39,7 +39,7 @@ export const ProductCard = ({ product }: Props) => {
         <Pressable
           onPress={() =>
             router.navigate({
-              pathname: "/productDetail/[id]",
+              pathname: "/product-detail/[id]",
               params: {
                 id: product.id,
                 name: product.name,

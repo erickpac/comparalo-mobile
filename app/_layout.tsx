@@ -41,7 +41,7 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
             <Stack.Screen
-              name="productDetail/[id]"
+              name="product-detail/[id]"
               options={({ route }) => ({
                 title: route.params?.name ?? "Product Detail",
                 presentation: "modal",
