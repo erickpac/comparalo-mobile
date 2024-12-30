@@ -1,8 +1,9 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { FallbackView } from "@/components/fallback-view";
+import { HeaderContent } from "@/components/product-detail/header";
 import { useFetchProductDetails } from "@/hooks/product-details/useFetchProductDetails";
-import { Money, formatMoney } from "@/lib/utils";
+import { formatMoney } from "@/lib/utils";
 import { useLocalSearchParams } from "expo-router";
 import Constants from "expo-constants";
 import {
@@ -10,7 +11,6 @@ import {
   Dimensions,
   FlatList,
   Image,
-  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -73,52 +73,6 @@ export default function ProductDetailScreen() {
     </ScrollView>
   );
 }
-
-type HeaderContentProps = {
-  productDescription?: string;
-  productPrice: Money;
-  productdetailUrl: string;
-  storeName: string;
-};
-
-const HeaderContent = ({
-  productDescription,
-  productPrice,
-  productdetailUrl,
-  storeName,
-}: HeaderContentProps) => {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <ProductDescription description={productDescription} />
-
-      <ThemedText type="defaultSemiBold">
-        {formatMoney(productPrice)}
-      </ThemedText>
-
-      <Pressable onPress={() => Linking.openURL(productdetailUrl)}>
-        <ThemedView
-          lightColor="black"
-          darkColor="grey"
-          style={styles.storeButtonContainer}
-        >
-          <Text style={styles.storeButtonText}>
-            {t("productDetailButAtStoreButtonTitle")} {storeName}
-          </Text>
-        </ThemedView>
-      </Pressable>
-    </>
-  );
-};
-
-const ProductDescription = ({ description }: { description?: string }) => {
-  if (!description) {
-    return null;
-  }
-
-  return <Text style={styles.greyedText}>{description}</Text>;
-};
 
 type ProductImageProps = {
   product: Product;
@@ -383,14 +337,6 @@ const styles = StyleSheet.create({
   },
   greyedText: {
     color: "grey",
-  },
-  storeButtonContainer: {
-    borderRadius: 6,
-  },
-  storeButtonText: {
-    color: "white",
-    textAlign: "center",
-    paddingVertical: 6,
   },
   highlightedImage: {
     width: "100%",
