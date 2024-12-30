@@ -6,7 +6,7 @@ import Constants from "expo-constants";
 import { formatMoney } from "@/lib/utils";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useRouter } from "expo-router";
-import { i18n } from "@/locales/localization";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   product: Product;
@@ -16,6 +16,7 @@ export const ProductCard = ({ product }: Props) => {
   const CURRENCY = Constants.expoConfig?.extra?.CURRENCY ?? "GTQ";
   const shadowColor = useThemeColor({}, "shadow");
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <ThemedView style={[styles.card, { shadowColor }]}>
@@ -34,15 +35,17 @@ export const ProductCard = ({ product }: Props) => {
         {formatMoney({ amount: product.current_price, currency: CURRENCY })}
       </ThemedText>
 
-    <ThemedView style={styles.bottomContainer}>
+      <ThemedView style={styles.bottomContainer}>
         <Pressable
-          onPress={ () => router.navigate({
-            pathname: "/productDetail/[id]",
-            params: {
-              id: product.id,
-              name: product.name
-            }
-          })}
+          onPress={() =>
+            router.navigate({
+              pathname: "/productDetail/[id]",
+              params: {
+                id: product.id,
+                name: product.name,
+              },
+            })
+          }
         >
           <ThemedView
             lightColor="black"
@@ -54,7 +57,7 @@ export const ProductCard = ({ product }: Props) => {
               darkColor="white"
               style={styles.viewDetailsText}
             >
-              {i18n.t("productCardViewDetailsButtonTitle")}
+              {t("productCardViewDetailsButtonTitle")}
             </ThemedText>
           </ThemedView>
         </Pressable>

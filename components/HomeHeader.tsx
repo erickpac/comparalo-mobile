@@ -3,20 +3,22 @@ import { Image, Pressable, StyleSheet } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { HeroProductCategory } from "@/types/home/home";
 import { Link } from "expo-router";
-import { i18n } from "@/locales/localization";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   heroCategory: HeroProductCategory;
 };
 
 export function HomeHeader({ heroCategory }: Props) {
+  const { t } = useTranslation();
+
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">
-        {i18n.t("homeCategory")} {heroCategory.name}
+        {t("homeCategory")} {heroCategory.name}
       </ThemedText>
       <ThemedText lightColor="grey" darkColor="grey">
-        {i18n.t("homeSubtitle")}
+        {t("homeSubtitle")}
       </ThemedText>
       <Link
         href={{
@@ -36,7 +38,7 @@ export function HomeHeader({ heroCategory }: Props) {
               darkColor="white"
               style={{ paddingVertical: 4, paddingHorizontal: 16 }}
             >
-              {i18n.t("homeCategoriesButtonTitle")}
+              {t("homeCategoriesButtonTitle")}
             </ThemedText>
           </ThemedView>
         </Pressable>

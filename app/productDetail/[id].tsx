@@ -5,21 +5,34 @@ import { useFetchProductDetails } from "@/hooks/productDetails/useFetchProductDe
 import { Money, formatMoney } from "@/lib/utils";
 import { useLocalSearchParams } from "expo-router";
 import Constants from "expo-constants";
-import { ActivityIndicator, Dimensions, FlatList, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Product, RelatedProduct } from "@/types/product/product";
 import { useEffect, useState } from "react";
 import { PriceHistory } from "@/types/product/price-history";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import { LineChart } from "react-native-chart-kit";
-import { i18n } from "@/locales/localization";
+import { useTranslation } from "react-i18next";
 
 export default function ProductDetailScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const params = useLocalSearchParams();
-  const { data, isLoading, error } = useFetchProductDetails({ id: Number(params.id) });
+  const { data, isLoading, error } = useFetchProductDetails({
+    id: Number(params.id),
+  });
   const CURRENCY: string = Constants.expoConfig?.extra?.currency ?? "GTQ";
-  
+
   if (isLoading || !data) {
     return <ActivityIndicator size="large" style={styles.activityIndicator} />;
   }
@@ -31,10 +44,12 @@ export default function ProductDetailScreen() {
   return (
     <ScrollView style={{ backgroundColor }}>
       <ThemedView style={styles.container}>
-        
         <HeaderContent
           productDescription={data.results.product.description}
-          productPrice={{ amount: data.results.product.current_price, currency: CURRENCY }}
+          productPrice={{
+            amount: data.results.product.current_price,
+            currency: CURRENCY,
+          }}
           storeUrl={data.results.product.stores.address}
           storeName={data.results.product.stores.name}
         />
@@ -56,16 +71,23 @@ export default function ProductDetailScreen() {
       </ThemedView>
     </ScrollView>
   );
-};
+}
 
 type HeaderContentProps = {
   productDescription?: string;
   productPrice: Money;
   storeUrl: string;
   storeName: string;
-}
+};
 
-const HeaderContent = ({ productDescription, productPrice, storeUrl, storeName }: HeaderContentProps) => {
+const HeaderContent = ({
+  productDescription,
+  productPrice,
+  storeUrl,
+  storeName,
+}: HeaderContentProps) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <ProductDescription description={productDescription} />
@@ -81,7 +103,7 @@ const HeaderContent = ({ productDescription, productPrice, storeUrl, storeName }
           style={styles.storeButtonContainer}
         >
           <Text style={styles.storeButtonText}>
-            {i18n.t("productDetailButAtStoreButtonTitle")} {storeName}
+            {t("productDetailButAtStoreButtonTitle")} {storeName}
           </Text>
         </ThemedView>
       </Pressable>
@@ -94,16 +116,18 @@ const ProductDescription = ({ description }: { description?: string }) => {
     return null;
   }
 
-  return <Text style={styles.greyedText}>{description}</Text>
+  return <Text style={styles.greyedText}>{description}</Text>;
 };
 
 type ProductImageProps = {
   product: Product;
   relatedProducts: RelatedProduct[];
-}
+};
 
 const ProductImage = ({ product, relatedProducts }: ProductImageProps) => {
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>(product.image_url);
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>(
+    product.image_url
+  );
 
   return (
     <>
@@ -115,7 +139,7 @@ const ProductImage = ({ product, relatedProducts }: ProductImageProps) => {
       <ProductImagesCarousel
         currentImageUrl={currentImageUrl}
         relatedProducts={relatedProducts}
-        updatedHighlightedImage={ (newUrl) =>{
+        updatedHighlightedImage={(newUrl) => {
           setCurrentImageUrl(newUrl);
         }}
       />
@@ -127,9 +151,13 @@ type ProductImagesCarouselProps = {
   currentImageUrl: string;
   relatedProducts: RelatedProduct[];
   updatedHighlightedImage: (newUrl: string) => void;
-}
+};
 
-const ProductImagesCarousel = ({ currentImageUrl, relatedProducts, updatedHighlightedImage }: ProductImagesCarouselProps) => {
+const ProductImagesCarousel = ({
+  currentImageUrl,
+  relatedProducts,
+  updatedHighlightedImage,
+}: ProductImagesCarouselProps) => {
   if (relatedProducts.length < 1) {
     return null;
   }
@@ -142,14 +170,17 @@ const ProductImagesCarousel = ({ currentImageUrl, relatedProducts, updatedHighli
     <FlatList
       horizontal
       data={relatedProducts}
-      renderItem={({ item }) =>
+      renderItem={({ item }) => (
         <Pressable onPress={() => updatedHighlightedImage(item.image_url)}>
           <Image
             source={{ uri: item.image_url }}
-            style={[styles.carouselImage, { borderWidth: item.image_url == currentImageUrl ? 1 : 0 }]}
+            style={[
+              styles.carouselImage,
+              { borderWidth: item.image_url == currentImageUrl ? 1 : 0 },
+            ]}
           />
         </Pressable>
-      }
+      )}
     />
   );
 };
@@ -157,9 +188,14 @@ const ProductImagesCarousel = ({ currentImageUrl, relatedProducts, updatedHighli
 type PriceComparisonProps = {
   relatedProducts: RelatedProduct[];
   currency: string;
-}
+};
 
-const PriceComparison = ({ relatedProducts, currency }: PriceComparisonProps) => {
+const PriceComparison = ({
+  relatedProducts,
+  currency,
+}: PriceComparisonProps) => {
+  const { t } = useTranslation();
+
   if (relatedProducts.length == 0) {
     return null;
   }
@@ -167,50 +203,51 @@ const PriceComparison = ({ relatedProducts, currency }: PriceComparisonProps) =>
   return (
     <>
       <ThemedText type="subtitle" style={{ paddingTop: 8 }}>
-        {i18n.t("productDetailPriceComparisonTitle")}
+        {t("productDetailPriceComparisonTitle")}
       </ThemedText>
 
       <Text style={styles.greyedText}>
-        {i18n.t("productDetailPriceComparisonSubtitle")}
+        {t("productDetailPriceComparisonSubtitle")}
       </Text>
 
       <ThemedView style={styles.table}>
         <ThemedView style={styles.tableRow}>
           <ThemedView style={styles.tableColumn}>
             <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {i18n.t("productDetailPriceComparisonTableHeaderColumn1")}
+              {t("productDetailPriceComparisonTableHeaderColumn1")}
             </Text>
           </ThemedView>
 
           <ThemedView style={styles.tableColumn}>
             <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {i18n.t("productDetailPriceComparisonTableHeaderColumn2")}
+              {t("productDetailPriceComparisonTableHeaderColumn2")}
             </Text>
           </ThemedView>
 
           <ThemedView style={styles.tableColumn}>
             <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {i18n.t("productDetailPriceComparisonTableHeaderColumn3")}
+              {t("productDetailPriceComparisonTableHeaderColumn3")}
             </Text>
           </ThemedView>
 
           <ThemedView style={styles.tableColumn}>
             <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {i18n.t("productDetailPriceComparisonTableHeaderColumn4")}
+              {t("productDetailPriceComparisonTableHeaderColumn4")}
             </Text>
           </ThemedView>
-
-          
         </ThemedView>
 
         <View style={styles.divider} />
 
-        {relatedProducts.map(relatedProduct => (
+        {relatedProducts.map((relatedProduct) => (
           <ThemedView key={relatedProduct.id}>
             <ThemedView style={styles.tableRow}>
-              <Image 
+              <Image
                 source={{ uri: relatedProduct.stores.logo }}
-                style={[styles.tableColumn, { width: 100, height: 30, justifyContent: "center" }]}
+                style={[
+                  styles.tableColumn,
+                  { width: 100, height: 30, justifyContent: "center" },
+                ]}
                 resizeMode="contain"
               />
 
@@ -218,12 +255,24 @@ const PriceComparison = ({ relatedProducts, currency }: PriceComparisonProps) =>
                 {relatedProduct.name}
               </ThemedText>
 
-              <ThemedText style={[styles.tableColumn, { textAlign: "right" }]} numberOfLines={1} ellipsizeMode="tail">
-                {formatMoney({ amount: relatedProduct.current_price, currency: currency })}
+              <ThemedText
+                style={[styles.tableColumn, { textAlign: "right" }]}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {formatMoney({
+                  amount: relatedProduct.current_price,
+                  currency: currency,
+                })}
               </ThemedText>
 
               <ThemedText style={[styles.tableColumn, { textAlign: "right" }]}>
-                {relatedProduct.sale_price ? formatMoney({ amount: relatedProduct.sale_price, currency: currency }) : "-"}
+                {relatedProduct.sale_price
+                  ? formatMoney({
+                      amount: relatedProduct.sale_price,
+                      currency: currency,
+                    })
+                  : "-"}
               </ThemedText>
             </ThemedView>
 
@@ -233,22 +282,28 @@ const PriceComparison = ({ relatedProducts, currency }: PriceComparisonProps) =>
       </ThemedView>
     </>
   );
-}
+};
 
 type PriceHistoryViewProps = {
   priceHistory: PriceHistory[];
   backgroundColor: string;
-}
+};
 
-const PriceHistoryView = ({ priceHistory, backgroundColor }: PriceHistoryViewProps) => {
+const PriceHistoryView = ({
+  priceHistory,
+  backgroundColor,
+}: PriceHistoryViewProps) => {
+  const { t } = useTranslation();
+
   if (priceHistory.length == 0) {
     return null;
   }
-  
-  const lastThirtyDaysItem = i18n.t("productDetailLastThirtyDaysSegmentedOption");
-  const lastNinetyDaysItem = i18n.t("productDetailLastNinetyDaysSegmentedOption");
+
+  const lastThirtyDaysItem = t("productDetailLastThirtyDaysSegmentedOption");
+  const lastNinetyDaysItem = t("productDetailLastNinetyDaysSegmentedOption");
   const segmentedControlItems = [lastThirtyDaysItem, lastNinetyDaysItem];
-  const [segmentedControlSelectedIndex, setSegmentedControlSelectedIndex] = useState(1);
+  const [segmentedControlSelectedIndex, setSegmentedControlSelectedIndex] =
+    useState(1);
   const [priceHistoryData, setPriceHistoryData] = useState<PriceHistory[]>([]);
 
   useEffect(() => {
@@ -258,11 +313,17 @@ const PriceHistoryView = ({ priceHistory, backgroundColor }: PriceHistoryViewPro
     fromDate.setDate(fromDate.getDate() - days);
 
     const filteredData = priceHistory
-      .filter(item => new Date(item.created_at).getTime() >= fromDate.getTime())
-      .sort((item1, item2) => Date.parse(item1.created_at) < Date.parse(item2.created_at) ? -1 : 1);
+      .filter(
+        (item) => new Date(item.created_at).getTime() >= fromDate.getTime()
+      )
+      .sort((item1, item2) =>
+        Date.parse(item1.created_at) < Date.parse(item2.created_at) ? -1 : 1
+      );
 
     if (filteredData.length == 0) {
-      setPriceHistoryData([{ id: 1, current_price: 0, sale_price: 0, created_at: ""  }])
+      setPriceHistoryData([
+        { id: 1, current_price: 0, sale_price: 0, created_at: "" },
+      ]);
     } else {
       setPriceHistoryData(filteredData);
     }
@@ -271,27 +332,31 @@ const PriceHistoryView = ({ priceHistory, backgroundColor }: PriceHistoryViewPro
   return (
     <ThemedView style={{ rowGap: 8 }}>
       <ThemedText type="subtitle" style={{ paddingTop: 8 }}>
-        {i18n.t("productDetailPriceHistoryTitle")}
+        {t("productDetailPriceHistoryTitle")}
       </ThemedText>
 
       <Text style={styles.greyedText}>
-        {i18n.t("productDetailPriceHistorySubtitle")}
+        {t("productDetailPriceHistorySubtitle")}
       </Text>
 
       <SegmentedControl
         values={segmentedControlItems}
         selectedIndex={segmentedControlSelectedIndex}
-        onChange={ (event) => { setSegmentedControlSelectedIndex(event.nativeEvent.selectedSegmentIndex) }}
+        onChange={(event) => {
+          setSegmentedControlSelectedIndex(
+            event.nativeEvent.selectedSegmentIndex
+          );
+        }}
       />
 
       <LineChart
         data={{
           labels: [],
           datasets: [
-            { data: priceHistoryData.map((item) => item.current_price) }
-          ]
+            { data: priceHistoryData.map((item) => item.current_price) },
+          ],
         }}
-        width={Dimensions.get("window").width - 16 }
+        width={Dimensions.get("window").width - 16}
         height={220}
         yAxisLabel="Q. "
         chartConfig={{
@@ -309,22 +374,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    gap: 10
+    gap: 10,
   },
   activityIndicator: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   greyedText: {
-    color: "grey"
+    color: "grey",
   },
   storeButtonContainer: {
-    borderRadius: 6
+    borderRadius: 6,
   },
   storeButtonText: {
     color: "white",
     textAlign: "center",
-    paddingVertical: 6
+    paddingVertical: 6,
   },
   highlightedImage: {
     width: "100%",
@@ -337,20 +402,20 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     overflow: "hidden",
     borderRadius: 8,
-    borderColor: "grey"
+    borderColor: "grey",
   },
   table: {
-    paddingTop: 8
+    paddingTop: 8,
   },
   tableRow: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   tableColumn: {
     width: "25%",
-    padding: 2
+    padding: 2,
   },
   divider: {
     backgroundColor: "#D3D3D3",
-    height: 1
-  }
+    height: 1,
+  },
 });

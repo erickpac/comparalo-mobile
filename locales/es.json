@@ -1,0 +1,21 @@
+{
+  "contactUs": "Contáctenos",
+  "aboutUs": "Sobre Nosotros",
+  "termsAndConditions": "Términos y Condiciones",
+  "privacyPolicy": "Políticas de Privacidad",
+  "homeCategory": "Encuentra",
+  "homeSubtitle": "Los mejores precios en un solo lugar.",
+  "homeCategoriesButtonTitle": "Haz clic aquí",
+  "productCardViewDetailsButtonTitle": "Ver detalles",
+  "productDetailButAtStoreButtonTitle": "Comprar en",
+  "productDetailPriceComparisonTitle": "Comparación de precios",
+  "productDetailPriceComparisonSubtitle": "Listado de precios en diferentes tiendas.",
+  "productDetailPriceComparisonTableHeaderColumn1": "Tienda",
+  "productDetailPriceComparisonTableHeaderColumn2": "Producto",
+  "productDetailPriceComparisonTableHeaderColumn3": "Precio regular",
+  "productDetailPriceComparisonTableHeaderColumn4": "Precio en oferta",
+  "productDetailPriceHistoryTitle": "Historial de precios",
+  "productDetailPriceHistorySubtitle": "Fluctuaciones de precios a lo largo del tiempo",
+  "productDetailLastThirtyDaysSegmentedOption": "Últimos 30 días",
+  "productDetailLastNinetyDaysSegmentedOption": "Últimos 90 días"
+}
