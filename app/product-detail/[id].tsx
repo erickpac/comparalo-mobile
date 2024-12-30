@@ -3,21 +3,18 @@ import { ThemedView } from "@/components/ThemedView";
 import { FallbackView } from "@/components/fallback-view";
 import { HeaderContent } from "@/components/product-detail/header";
 import { ProductImage } from "@/components/product-detail/image";
+import { PriceComparison } from "@/components/product-detail/price-comparison";
 import { useFetchProductDetails } from "@/hooks/product-details/useFetchProductDetails";
-import { formatMoney } from "@/lib/utils";
 import { useLocalSearchParams } from "expo-router";
 import Constants from "expo-constants";
 import {
   ActivityIndicator,
   Dimensions,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { RelatedProduct } from "@/types/product/product";
 import { useEffect, useState } from "react";
 import { PriceHistory } from "@/types/product/price-history";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
@@ -72,105 +69,6 @@ export default function ProductDetailScreen() {
     </ScrollView>
   );
 }
-
-type PriceComparisonProps = {
-  relatedProducts: RelatedProduct[];
-  currency: string;
-};
-
-const PriceComparison = ({
-  relatedProducts,
-  currency,
-}: PriceComparisonProps) => {
-  const { t } = useTranslation();
-
-  if (relatedProducts.length == 0) {
-    return null;
-  }
-
-  return (
-    <>
-      <ThemedText type="subtitle" style={{ paddingTop: 8 }}>
-        {t("productDetailPriceComparisonTitle")}
-      </ThemedText>
-
-      <Text style={styles.greyedText}>
-        {t("productDetailPriceComparisonSubtitle")}
-      </Text>
-
-      <ThemedView style={styles.table}>
-        <ThemedView style={styles.tableRow}>
-          <ThemedView style={styles.tableColumn}>
-            <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {t("productDetailPriceComparisonTableHeaderColumn1")}
-            </Text>
-          </ThemedView>
-
-          <ThemedView style={styles.tableColumn}>
-            <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {t("productDetailPriceComparisonTableHeaderColumn2")}
-            </Text>
-          </ThemedView>
-
-          <ThemedView style={styles.tableColumn}>
-            <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {t("productDetailPriceComparisonTableHeaderColumn3")}
-            </Text>
-          </ThemedView>
-
-          <ThemedView style={styles.tableColumn}>
-            <Text style={[styles.greyedText, { textAlign: "center" }]}>
-              {t("productDetailPriceComparisonTableHeaderColumn4")}
-            </Text>
-          </ThemedView>
-        </ThemedView>
-
-        <View style={styles.divider} />
-
-        {relatedProducts.map((relatedProduct) => (
-          <ThemedView key={relatedProduct.id}>
-            <ThemedView style={styles.tableRow}>
-              <Image
-                source={{ uri: relatedProduct.stores.logo }}
-                style={[
-                  styles.tableColumn,
-                  { width: 100, height: 30, justifyContent: "center" },
-                ]}
-                resizeMode="contain"
-              />
-
-              <ThemedText style={styles.tableColumn}>
-                {relatedProduct.name}
-              </ThemedText>
-
-              <ThemedText
-                style={[styles.tableColumn, { textAlign: "right" }]}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {formatMoney({
-                  amount: relatedProduct.current_price,
-                  currency: currency,
-                })}
-              </ThemedText>
-
-              <ThemedText style={[styles.tableColumn, { textAlign: "right" }]}>
-                {relatedProduct.sale_price
-                  ? formatMoney({
-                      amount: relatedProduct.sale_price,
-                      currency: currency,
-                    })
-                  : "-"}
-              </ThemedText>
-            </ThemedView>
-
-            <View style={styles.divider} />
-          </ThemedView>
-        ))}
-      </ThemedView>
-    </>
-  );
-};
 
 type PriceHistoryViewProps = {
   priceHistory: PriceHistory[];
@@ -270,19 +168,5 @@ const styles = StyleSheet.create({
   },
   greyedText: {
     color: "grey",
-  },
-  table: {
-    paddingTop: 8,
-  },
-  tableRow: {
-    flexDirection: "row",
-  },
-  tableColumn: {
-    width: "25%",
-    padding: 2,
-  },
-  divider: {
-    backgroundColor: "#D3D3D3",
-    height: 1,
   },
 });
