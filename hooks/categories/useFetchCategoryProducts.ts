@@ -27,10 +27,10 @@ export const useFetchCategoryProducts = ({ id }: Props) => {
     isError,
     error,
     data,
-    refetch,
-    fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
+    refetch,
+    fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ["category-products", id],
     queryFn: ({ pageParam = 1 }) => fetchCategoryProducts({ id, pageParam }),
@@ -45,9 +45,9 @@ export const useFetchCategoryProducts = ({ id }: Props) => {
     isLoading,
     isError,
     error,
-    refetch,
-    fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
+    refetch,
+    fetchNextPage,
   };
 };
